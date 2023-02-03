@@ -1,0 +1,15 @@
+{
+  "name": "@stellar-expert/api-billing-connector",
+  "version": "1.0.0",
+  "description": "Billing client for paid and rate-limited StellarExpert API endpoints",
+  "main": "src/index.js",
+  "author": "team@stellar.expert",
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/stellar-expert/api-billing-connector.git",
+    "type": "git"
+  },
+  "dependencies": {
+    "ws": "^8.12.0"
+  }
+}
