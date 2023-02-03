@@ -123,7 +123,11 @@ class BillingService {
                 //normalize
                 origin = origin.toLowerCase().replace(/^https?:\/\//, '')
                 //find account by origin
-                const account = Object.values(this.accounts).find(a => a.origins?.includes(origin))
+                const account = Object.values(this.accounts)
+                    .find(a => a.origins?.some(ao =>
+                        ao === origin || //direct domain match
+                        ao.startsWith('*.') && origin.endsWith(ao.substring(1)) //wildcard match
+                    ))
                 if (account)
                     return account
             }
