@@ -115,24 +115,26 @@ class BillingService {
      */
     matchAccountFromRequestHeaders(requestHeaders) {
         let origin = requestHeaders.origin
-        if (origin) {
-            //check if the account origin belongs to our frontend
-            if (this.allowlist.has(origin))
-                return true
-            //normalize
-            origin = origin.toLowerCase().replace(/^https?:\/\//, '')
-            //find account by origin
-            const account = Object.values(this.accounts).find(a => a.origins?.includes(origin))
-            if (account)
-                return account
-        }
-        //try to match account by provided API key
-        const auth = requestHeaders.authorization
-        if (auth) {
-            const [type, apiKey] = auth.split(' ')
-            //require only bearer authorization
-            if (type === 'Bearer') {
-                return Object.values(this.accounts).find(a => a.apiKeys?.includes(apiKey)) || false
+        //check if the account origin belongs to our frontend
+        if (origin && this.allowlist.has(origin))
+            return true
+        if (this.accounts) {
+            if (origin) {
+                //normalize
+                origin = origin.toLowerCase().replace(/^https?:\/\//, '')
+                //find account by origin
+                const account = Object.values(this.accounts).find(a => a.origins?.includes(origin))
+                if (account)
+                    return account
+            }
+            //try to match account by provided API key
+            const auth = requestHeaders.authorization
+            if (auth) {
+                const [type, apiKey] = auth.split(' ')
+                //require only bearer authorization
+                if (type === 'Bearer') {
+                    return Object.values(this.accounts).find(a => a.apiKeys?.includes(apiKey)) || false
+                }
             }
         }
         return false
