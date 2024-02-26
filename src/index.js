@@ -1,5 +1,6 @@
 const Account = require('./billing-account')
 const WebSocketChannel = require('./websocket-channel')
+const OriginMatcher = require('./origin-matcher')
 
 class BillingService {
     /**
@@ -15,7 +16,7 @@ class BillingService {
             throw new Error()
         this.syncInterval = syncInterval
         this.pricing = pricing
-        this.allowlist = new Set(allowlist || [])
+        this.originMatcher = new OriginMatcher(allowlist)
         this.pendingCharges = {}
         this.wsChannel = new WebSocketChannel({
             url: billingServerUrl,
@@ -45,10 +46,10 @@ class BillingService {
     wsChannel
 
     /**
-     * @type {Set<String>}
+     * @type {OriginMatcher}
      * @readonly
      */
-    allowlist
+    originMatcher
 
     /**
      * @type {Object<String, BillingAccount>}
@@ -116,7 +117,7 @@ class BillingService {
     matchAccountFromRequestHeaders(requestHeaders) {
         let origin = requestHeaders.origin
         //check if the account origin belongs to our frontend
-        if (origin && this.allowlist.has(origin))
+        if (origin && this.originMatcher.match(origin))
             return true
         if (this.accounts) {
             if (origin) {
