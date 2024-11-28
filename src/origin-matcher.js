@@ -34,7 +34,8 @@ class OriginMatcher {
             return false
         if (this.list.has(origin))
             return true
-        if (this.wildcards.has(/\w+\.\w+$/.exec(origin)[0]))
+        const domainMatch = /\w+\.\w+$/.exec(origin)
+        if (domainMatch && this.wildcards.has(domainMatch[0]))
             return true
         return false
     }

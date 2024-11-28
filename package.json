@@ -1,7 +1,7 @@
 {
   "name": "@stellar-expert/api-billing-connector",
   "private": true,
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Billing client for paid and rate-limited StellarExpert API endpoints",
   "main": "src/index.js",
   "author": "team@stellar.expert",
