@@ -30,6 +30,8 @@ class OriginMatcher {
      * @return {Boolean}
      */
     match(origin) {
+        if (!origin)
+            return false
         if (this.list.has(origin))
             return true
         if (this.wildcards.has(/\w+\.\w+$/.exec(origin)[0]))
